@@ -1,41 +1,104 @@
-{% extends 'base.html.twig' %}
+{% extends 'adminbase.html.twig' %}
 
-{% block body %}
-    <h1>Product list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.name }}</a></td>
-                <td>{{ product.price }}</td>
-                <td>{{ product.id }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('product_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+{% block body -%}
+    <div class="clearfix">
+        <div class="panel panel-default">
+            <div class="panel-heading panel-header clearfix">
+                Фильтр
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <form class="text-center" action="{{ path('product_index') }}" method="GET">
+                        <input type="hidden" name="page" value="{{ page }}"/>
+                        <div class="col-xs-12 col-sm-6 input-group float-left">
+                            <span class="input-group-addon" id="category-group">Категория</span>
+                            <select name="category" class="form-control" aria-describedby="category-group">
+                                {% if category == 0 %}
+                                    <option selected value="0">Не задано</option>
+                                {% else %}
+                                    <option value="0">Не задано</option>
+                                {% endif %}
+                                {% for c in categorys %}
+                                    {% if c.id == category %}
+                                        <option selected value="{{c.id}}">{{c.name}}</option>
+                                    {% else %}
+                                        <option value="{{c.id}}">{{c.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 input-group float-right">
+                            <span class="input-group-addon" id="name-group">Название</span>
+                            <input name="name" value="{{ name }}" type="text" class="form-control" aria-describedby="name-group"/>
+                        </div>
+                        <button type="submit" class="btn btn-default" style="margin-top:5px;">Найти</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading panel-header clearfix">
+                <div class="pull-left">
+                    <h3 class="panel-title"><strong>Товары</strong></h3>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ path('product_new') }}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        Добавить
+                    </a>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Миниатюра</th>
+                        <th>Название</th>
+                        <th>Стоимость</th>
+                        <th>Изменить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in products %}
+                        <tr>
+                            <td class="th-index">{{ loop.index }}</td>
+                            <td>{{ entity.id }}</td>
+                            <td>{{ entity.name }}</td>
+                            <td>{{ entity.price }}</td>
+                            <td class="th-action">
+                                <a href="{{ path('product_edit', { 'id': entity.id }) }}">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    &nbsp;Изменить
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if count > 1 %}
+            <nav class="float-right">
+                <ul class="pagination">
+                    {% for p in count..0 %}
+                        {% if loop.index == page %}
+                            <li class="active">
+                                <a href="{{ path('product_index', {'page' : loop.index, 'category' : category, 'name' : name}) }}">
+                                    {{loop.index}} <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{{ path('product_index', {'page' : loop.index, 'category' : category, 'name' : name}) }}">
+                                    {{loop.index}}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>   
+{% endblock %}
+{% block title %}
+    Товары
 {% endblock %}

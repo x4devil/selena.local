@@ -172,4 +172,8 @@ class Product
     {
         return $this->category;
     }
+    
+    function __toString() {
+        return $this->getName();
+    }
 }

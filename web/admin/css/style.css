@@ -1,0 +1,41 @@
+.float-left {
+    float:left !important;
+}
+.float-right {
+    float:right !important;
+}
+.th-action {
+    width: 10%;
+}
+.th-index {
+    width: 5%;
+}
+.th-class {
+    text-align: center;
+}
+.align-right {
+    text-align: right;
+}
+.panel-header {
+    height: 35px;
+}
+.panel-header .header-left-block {
+    display: inline-block;
+    float: left;
+}
+.panel-header .header-right-block {
+    float: right;
+}
+.panel-actions {
+    text-align: right;
+    margin-top: 10px;
+}
+.input-group {
+    width: 100%;
+}
+.input-group .input-group-addon {
+    width: 20%;
+}
+.text-center {
+    text-align: center;
+}

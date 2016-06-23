@@ -62,4 +62,8 @@ class Category
     {
         return $this->id;
     }
+    
+    function __toString() {
+        return $this->getName();
+    }
 }

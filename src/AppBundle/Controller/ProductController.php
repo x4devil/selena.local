@@ -14,23 +14,76 @@ use AppBundle\Form\ProductType;
  *
  * @Route("/product")
  */
-class ProductController extends Controller
-{
+class ProductController extends Controller {
+
+    protected $activePage = 'product';
+    protected $PAGE_SIZE = 10;
+
     /**
      * Lists all Product entities.
      *
      * @Route("/", name="product_index")
      * @Method("GET")
      */
-    public function indexAction()
-    {
+    public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
+        $categorys = $em->getRepository('AppBundle:Category')->findAll();
+        $page = ($request->get('page') != null || $request->get('page') != 0) ? $request->get('page') : 1;
 
-        $products = $em->getRepository('AppBundle:Product')->findAll();
+        if ($page == 1) {
+            $offset = 0;
+        } else {
+            $offset = ($page - 1) * $this->PAGE_SIZE;
+        }
+
+        $count = $this->getPageCount(
+                count($this->getProductWithOffset(
+                                $request->get('category'), $request->get('name'), 0, 5000)), $page);
+
+        $products = $this->getProductWithOffset(
+                $request->get('category'), $request->get('name'), $offset, $this->PAGE_SIZE);
 
         return $this->render('product/index.html.twig', array(
-            'products' => $products,
+                    'products' => $products,
+                    'page' => $page,
+                    'category' => $request->get('category') != null ? $request->get('category') : 0,
+                    'name' => $request->get('name'),
+                    'categorys' => $categorys,
+                    'count' => $count,
+                    'activePage' => $this->activePage,
         ));
+    }
+
+    private function getPageCount($count, $page) {
+        if ($count != 0) {
+            $count = (int) ($count / $this->PAGE_SIZE);
+        }
+        return $count;
+    }
+
+    private function getProductWithOffset($category, $name, $offset, $size) {
+        $em = $this->getDoctrine()->getManager();
+        $productRepo = $em->getRepository('AppBundle:Product');
+
+
+        $productQuery = $productRepo->createQueryBuilder('p');
+        $productQuery
+                ->leftJoin('p.images', 'i')
+                ->join('p.category', 'c')
+                ->distinct()
+                ->where('1=1');
+
+        if ($category != null && $category != 0) {
+            $productQuery->andWhere($productQuery->expr()->eq('c.id', $category));
+        }
+        if ($name != null && $name != '') {
+            $productQuery->andWhere($productQuery->expr()->like('p.name', '\'%' . $name . '%\''));
+        }
+
+        $productQuery
+                ->setFirstResult($offset)
+                ->setMaxResults($size);
+        return $productQuery->getQuery()->getResult();
     }
 
     /**
@@ -39,8 +92,7 @@ class ProductController extends Controller
      * @Route("/new", name="product_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $product = new Product();
         $form = $this->createForm('AppBundle\Form\ProductType', $product);
         $form->handleRequest($request);
@@ -50,12 +102,13 @@ class ProductController extends Controller
             $em->persist($product);
             $em->flush();
 
-            return $this->redirectToRoute('product_show', array('id' => $product->getId()));
+            return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
         }
 
         return $this->render('product/new.html.twig', array(
-            'product' => $product,
-            'form' => $form->createView(),
+                    'product' => $product,
+                    'form' => $form->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -65,13 +118,13 @@ class ProductController extends Controller
      * @Route("/{id}", name="product_show")
      * @Method("GET")
      */
-    public function showAction(Product $product)
-    {
+    public function showAction(Product $product) {
         $deleteForm = $this->createDeleteForm($product);
 
         return $this->render('product/show.html.twig', array(
-            'product' => $product,
-            'delete_form' => $deleteForm->createView(),
+                    'product' => $product,
+                    'delete_form' => $deleteForm->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -81,8 +134,7 @@ class ProductController extends Controller
      * @Route("/{id}/edit", name="product_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, Product $product)
-    {
+    public function editAction(Request $request, Product $product) {
         $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('AppBundle\Form\ProductType', $product);
         $editForm->handleRequest($request);
@@ -96,9 +148,10 @@ class ProductController extends Controller
         }
 
         return $this->render('product/edit.html.twig', array(
-            'product' => $product,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'product' => $product,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -108,8 +161,7 @@ class ProductController extends Controller
      * @Route("/{id}", name="product_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Product $product)
-    {
+    public function deleteAction(Request $request, Product $product) {
         $form = $this->createDeleteForm($product);
         $form->handleRequest($request);
 
@@ -129,12 +181,12 @@ class ProductController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Product $product)
-    {
+    private function createDeleteForm(Product $product) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('product_delete', array('id' => $product->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('product_delete', array('id' => $product->getId())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
 }
