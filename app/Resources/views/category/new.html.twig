@@ -1,16 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends '::adminbase.html.twig' %}
 
-{% block body %}
-    <h1>Category creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('category_index') }}">Back to the list</a>
-        </li>
-    </ul>
+{% block title %}
+    Добавление категории
+{% endblock %}
+{% block body -%}
+    <div class="panel panel-default">
+        <div class="panel-heading panel-header">
+            <h3 class="panel-title">Добавление категории</h3>
+        </div>
+        <div class="panel-body">
+            {{ form_start(form)}}
+            <div class="input-group">
+                <span class="input-group-addon" id="name-group">Название</span>
+                {{ form_widget(form.name, { 'attr': {'class': 'form-control', 'aria-describedby' : 'name-group', 'placeholder': 'Название'} }) }}
+            </div>
+            <div class="panel-actions">
+                <input class="btn btn-default" type="submit" value="Сохранить" />
+                <a class="btn btn-default" href="{{ path('category_index') }}">Назад</a>
+                <div>
+                    {{ form_end(form)}}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

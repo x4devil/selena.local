@@ -113,22 +113,6 @@ class ProductController extends Controller {
     }
 
     /**
-     * Finds and displays a Product entity.
-     *
-     * @Route("/{id}", name="product_show")
-     * @Method("GET")
-     */
-    public function showAction(Product $product) {
-        $deleteForm = $this->createDeleteForm($product);
-
-        return $this->render('product/show.html.twig', array(
-                    'product' => $product,
-                    'delete_form' => $deleteForm->createView(),
-                    'activePage' => $this->activePage,
-        ));
-    }
-
-    /**
      * Displays a form to edit an existing Product entity.
      *
      * @Route("/{id}/edit", name="product_edit")

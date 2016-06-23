@@ -16,6 +16,7 @@ use AppBundle\Form\CategoryType;
  */
 class CategoryController extends Controller
 {
+    protected $activePage = 'category';
     /**
      * Lists all Category entities.
      *
@@ -30,6 +31,7 @@ class CategoryController extends Controller
 
         return $this->render('category/index.html.twig', array(
             'categories' => $categories,
+            'activePage' => $this->activePage,
         ));
     }
 
@@ -50,31 +52,16 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('category_show', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_index', array('id' => $category->getId()));
         }
 
         return $this->render('category/new.html.twig', array(
             'category' => $category,
             'form' => $form->createView(),
+            'activePage' => $this->activePage,
         ));
     }
-
-    /**
-     * Finds and displays a Category entity.
-     *
-     * @Route("/{id}", name="category_show")
-     * @Method("GET")
-     */
-    public function showAction(Category $category)
-    {
-        $deleteForm = $this->createDeleteForm($category);
-
-        return $this->render('category/show.html.twig', array(
-            'category' => $category,
-            'delete_form' => $deleteForm->createView(),
-        ));
-    }
-
+    
     /**
      * Displays a form to edit an existing Category entity.
      *
@@ -92,13 +79,14 @@ class CategoryController extends Controller
             $em->persist($category);
             $em->flush();
 
-            return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render('category/edit.html.twig', array(
             'category' => $category,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'activePage' => $this->activePage,
         ));
     }
 
