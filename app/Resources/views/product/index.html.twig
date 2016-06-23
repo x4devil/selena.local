@@ -79,7 +79,7 @@
         {% if count > 1 %}
             <nav class="float-right">
                 <ul class="pagination">
-                    {% for p in count..0 %}
+                    {% for p in count..1 %}
                         {% if loop.index == page %}
                             <li class="active">
                                 <a href="{{ path('product_index', {'page' : loop.index, 'category' : category, 'name' : name}) }}">

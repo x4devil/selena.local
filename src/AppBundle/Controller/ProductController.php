@@ -18,6 +18,7 @@ class ProductController extends Controller {
 
     protected $activePage = 'product';
     protected $PAGE_SIZE = 10;
+    protected $MAX_RESULT = 5000;
 
     /**
      * Lists all Product entities.
@@ -28,7 +29,7 @@ class ProductController extends Controller {
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $categorys = $em->getRepository('AppBundle:Category')->findAll();
-        $page = ($request->get('page') != null || $request->get('page') != 0) ? $request->get('page') : 1;
+        $page = ($request->get('page') != null && $request->get('page') != 0) ? $request->get('page') : 1;
 
         if ($page == 1) {
             $offset = 0;
@@ -38,7 +39,7 @@ class ProductController extends Controller {
 
         $count = $this->getPageCount(
                 count($this->getProductWithOffset(
-                                $request->get('category'), $request->get('name'), 0, 5000)), $page);
+                                $request->get('category'), $request->get('name'), 0, $this->MAX_RESULT)));
 
         $products = $this->getProductWithOffset(
                 $request->get('category'), $request->get('name'), $offset, $this->PAGE_SIZE);
@@ -54,9 +55,13 @@ class ProductController extends Controller {
         ));
     }
 
-    private function getPageCount($count, $page) {
+    private function getPageCount($count) {
         if ($count != 0) {
-            $count = (int) ($count / $this->PAGE_SIZE);
+            if ($count % $this->PAGE_SIZE == 0) {
+                $count = (int) ($count / $this->PAGE_SIZE);
+            } else {
+                $count = (int) ($count / $this->PAGE_SIZE) + 1;
+            }
         }
         return $count;
     }

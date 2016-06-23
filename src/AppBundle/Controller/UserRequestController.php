@@ -14,23 +14,60 @@ use AppBundle\Form\UserRequestType;
  *
  * @Route("/userrequest")
  */
-class UserRequestController extends Controller
-{
+class UserRequestController extends Controller {
+
+    protected $activePage = 'userrequest';
+    protected $PAGE_SIZE = 10;
+    protected $MAX_RESULT = 5000;
+
     /**
      * Lists all UserRequest entities.
      *
      * @Route("/", name="userrequest_index")
      * @Method("GET")
      */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+    public function indexAction(Request $request) {
+        $page = ($request->get('page') != null && $request->get('page') != 0) ? $request->get('page') : 1;
 
-        $userRequests = $em->getRepository('AppBundle:UserRequest')->findAll();
+        if ($page == 1) {
+            $offset = 0;
+        } else {
+            $offset = ($page - 1) * $this->PAGE_SIZE;
+        }
+
+        $count = $this->getPageCount(
+                count($this->getRequestWithOffset(0, $this->MAX_RESULT)));
+        $userRequests = $this->getRequestWithOffset($offset, $this->PAGE_SIZE);
 
         return $this->render('userrequest/index.html.twig', array(
-            'userRequests' => $userRequests,
+                    'userRequests' => $userRequests,
+                    'page' => $page,
+                    'count' => $count,
+                    'activePage' => $this->activePage,
         ));
+    }
+
+    private function getPageCount($count) {
+        if ($count != 0) {
+            if ($count % $this->PAGE_SIZE == 0) {
+                $count = (int) ($count / $this->PAGE_SIZE);
+            } else {
+                $count = (int) ($count / $this->PAGE_SIZE) + 1;
+            }
+        }
+        return $count;
+    }
+
+    private function getRequestWithOffset($offset, $size) {
+        $em = $this->getDoctrine()->getManager();
+        $productRepo = $em->getRepository('AppBundle:UserRequest');
+
+
+        $productQuery = $productRepo->createQueryBuilder('r')
+                ->setFirstResult($offset)
+                ->setMaxResults($size);
+
+        return $productQuery->getQuery()->getResult();
     }
 
     /**
@@ -39,8 +76,7 @@ class UserRequestController extends Controller
      * @Route("/new", name="userrequest_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $userRequest = new UserRequest();
         $form = $this->createForm('AppBundle\Form\UserRequestType', $userRequest);
         $form->handleRequest($request);
@@ -54,8 +90,9 @@ class UserRequestController extends Controller
         }
 
         return $this->render('userrequest/new.html.twig', array(
-            'userRequest' => $userRequest,
-            'form' => $form->createView(),
+                    'userRequest' => $userRequest,
+                    'form' => $form->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -65,13 +102,13 @@ class UserRequestController extends Controller
      * @Route("/{id}", name="userrequest_show")
      * @Method("GET")
      */
-    public function showAction(UserRequest $userRequest)
-    {
+    public function showAction(UserRequest $userRequest) {
         $deleteForm = $this->createDeleteForm($userRequest);
 
         return $this->render('userrequest/show.html.twig', array(
-            'userRequest' => $userRequest,
-            'delete_form' => $deleteForm->createView(),
+                    'userRequest' => $userRequest,
+                    'delete_form' => $deleteForm->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -81,8 +118,7 @@ class UserRequestController extends Controller
      * @Route("/{id}/edit", name="userrequest_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction(Request $request, UserRequest $userRequest)
-    {
+    public function editAction(Request $request, UserRequest $userRequest) {
         $deleteForm = $this->createDeleteForm($userRequest);
         $editForm = $this->createForm('AppBundle\Form\UserRequestType', $userRequest);
         $editForm->handleRequest($request);
@@ -96,9 +132,10 @@ class UserRequestController extends Controller
         }
 
         return $this->render('userrequest/edit.html.twig', array(
-            'userRequest' => $userRequest,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'userRequest' => $userRequest,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
+                    'activePage' => $this->activePage,
         ));
     }
 
@@ -108,8 +145,7 @@ class UserRequestController extends Controller
      * @Route("/{id}", name="userrequest_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, UserRequest $userRequest)
-    {
+    public function deleteAction(Request $request, UserRequest $userRequest) {
         $form = $this->createDeleteForm($userRequest);
         $form->handleRequest($request);
 
@@ -129,12 +165,12 @@ class UserRequestController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(UserRequest $userRequest)
-    {
+    private function createDeleteForm(UserRequest $userRequest) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('userrequest_delete', array('id' => $userRequest->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('userrequest_delete', array('id' => $userRequest->getId())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
 }

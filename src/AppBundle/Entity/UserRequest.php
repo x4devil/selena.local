@@ -77,7 +77,11 @@ class UserRequest
      */
     private $id;
 
-
+    
+    public function __construct()
+    {
+        $this->status = 0;
+    }
 
     /**
      * Set name

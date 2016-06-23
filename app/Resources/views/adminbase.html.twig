@@ -27,7 +27,7 @@
                         {% if activePage == 'product' %}
                             <li class="active"><a href="{{ path('product_index', {'page':'1', 'category':'0', 'name':''}) }}">Товары</a></li>
                         {% else %}
-                            <li><a href="{{ path('product_index') }}">Товары</a></li>
+                            <li><a href="{{ path('product_index', {'page':'1', 'category':'0', 'name':''}) }}">Товары</a></li>
                         {% endif %}
                         
                         {% if activePage == 'category' %}
@@ -37,9 +37,9 @@
                         {% endif %}
                         
                         {% if activePage == 'userrequest' %}
-                            <li class="active"><a href="{{ path('userrequest_index') }}">Заявки</a></li>
+                            <li class="active"><a href="{{ path('userrequest_index', {'page':'1'}) }}">Заявки</a></li>
                         {% else %}
-                            <li><a href="{{ path('userrequest_index') }}">Заявки</a></li>
+                            <li><a href="{{ path('userrequest_index', {'page':'1'}) }}">Заявки</a></li>
                         {% endif %}
                         {#{% if activePage == 'settings' %}
                             <li class="active"><a href="{{ path('settings') }}">Настройки</a></li>
