@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>UserRequestProduct list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userRequestProduct in userRequestProducts %}
+            <tr>
+                <td><a href="{{ path('userrequestproduct_show', { 'id': userRequestProduct.id }) }}">{{ userRequestProduct.price }}</a></td>
+                <td>{{ userRequestProduct.amount }}</td>
+                <td>{{ userRequestProduct.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('userrequestproduct_show', { 'id': userRequestProduct.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('userrequestproduct_edit', { 'id': userRequestProduct.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userrequestproduct_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Product" table="product">
+    <indexes>
+      <index name="id_category" columns="id_category"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="500" nullable="false"/>
+    <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
+    <many-to-one field="category" target-entity="Category">
+      <join-columns>
+        <join-column name="id_category" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <one-to-many target-entity="Images" mapped-by="product" field="images"/>
+  </entity>
+</doctrine-mapping>

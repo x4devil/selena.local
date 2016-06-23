@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>UserRequest list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Lastname</th>
+                <th>Company</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Created</th>
+                <th>Status</th>
+                <th>Middlename</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userRequest in userRequests %}
+            <tr>
+                <td><a href="{{ path('userrequest_show', { 'id': userRequest.id }) }}">{{ userRequest.name }}</a></td>
+                <td>{{ userRequest.lastname }}</td>
+                <td>{{ userRequest.company }}</td>
+                <td>{{ userRequest.phone }}</td>
+                <td>{{ userRequest.email }}</td>
+                <td>{% if userRequest.created %}{{ userRequest.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ userRequest.status }}</td>
+                <td>{{ userRequest.middlename }}</td>
+                <td>{{ userRequest.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('userrequest_show', { 'id': userRequest.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('userrequest_edit', { 'id': userRequest.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('userrequest_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}

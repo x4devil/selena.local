@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\UserRequest" table="user_request">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="300" nullable="false"/>
+    <field name="lastname" type="string" column="lastname" length="300" nullable="false"/>
+    <field name="company" type="string" column="company" length="300" nullable="true"/>
+    <field name="phone" type="string" column="phone" length="20" nullable="false"/>
+    <field name="email" type="string" column="email" length="200" nullable="false"/>
+    <field name="created" type="datetime" column="created" nullable="false"/>
+    <field name="status" type="smallint" column="status" nullable="false"/>
+    <field name="middlename" type="string" column="middlename" length="300" nullable="false"/>
+  </entity>
+</doctrine-mapping>
