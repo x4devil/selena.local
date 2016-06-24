@@ -119,24 +119,36 @@ class UserRequestController extends Controller {
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, UserRequest $userRequest) {
+        $em = $this->getDoctrine()->getManager();
         $deleteForm = $this->createDeleteForm($userRequest);
-        $editForm = $this->createForm('AppBundle\Form\UserRequestType', $userRequest);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        $products = $userRequest->getUserRequestProduct();
+        $sum = 0;
+        foreach ($products as $p) {
+            $sum += $p->getAmount() * $p->getPrice();
+        }
+
+        if ($request->isMethod('POST')) {
+            $userRequest->setStatus($request->get('status'));
             $em->persist($userRequest);
             $em->flush();
-
-            return $this->redirectToRoute('userrequest_edit', array('id' => $userRequest->getId()));
+            return $this->redirectToRoute('userrequest_index');
         }
 
         return $this->render('userrequest/edit.html.twig', array(
                     'userRequest' => $userRequest,
-                    'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
+                    'sum' => $sum,
                     'activePage' => $this->activePage,
         ));
+    }
+
+    /**
+     * @Route("/{id}/excel", name="userrequest_excel")
+     * @Method("GET")
+     */
+    public function excelAction(UserRequest $userRequest) {
+        
     }
 
     /**

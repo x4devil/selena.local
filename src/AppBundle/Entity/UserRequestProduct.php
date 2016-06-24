@@ -6,55 +6,33 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * UserRequestProduct
- *
- * @ORM\Table(name="user_request_product", indexes={@ORM\Index(name="id_product", columns={"id_product"}), @ORM\Index(name="id_user_request", columns={"id_user_request"})})
- * @ORM\Entity
  */
 class UserRequestProduct
 {
     /**
      * @var float
-     *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=false)
      */
     private $price;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="amount", type="smallint", nullable=false)
      */
     private $amount;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Product
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Product")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_product", referencedColumnName="id")
-     * })
-     */
-    private $product;
-
-    /**
      * @var \AppBundle\Entity\UserRequest
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserRequest")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user_request", referencedColumnName="id")
-     * })
      */
     private $userRequest;
 
+    /**
+     * @var \AppBundle\Entity\Product
+     */
+    private $product;
 
 
     /**
@@ -114,30 +92,7 @@ class UserRequestProduct
     }
 
     /**
-     * Set product
-     *
-     * @param \AppBundle\Entity\Product $product
-     * @return UserRequestProduct
-     */
-    public function setProduct(\AppBundle\Entity\Product $product = null)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * Get product
-     *
-     * @return \AppBundle\Entity\Product 
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    /**
-     * Set userRequest
+     * Set idUserRequest
      *
      * @param \AppBundle\Entity\UserRequest $userRequest
      * @return UserRequestProduct
@@ -150,12 +105,35 @@ class UserRequestProduct
     }
 
     /**
-     * Get userRequest
+     * Get idUserRequest
      *
      * @return \AppBundle\Entity\UserRequest 
      */
     public function getUserRequest()
     {
         return $this->userRequest;
+    }
+
+    /**
+     * Set idProduct
+     *
+     * @param \AppBundle\Entity\Product $product
+     * @return UserRequestProduct
+     */
+    public function setProduct(\AppBundle\Entity\Product $product = null)
+    {
+        $this->product = $product;
+
+        return $this;
+    }
+
+    /**
+     * Get idProduct
+     *
+     * @return \AppBundle\Entity\Product 
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }

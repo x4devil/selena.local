@@ -6,81 +6,65 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * UserRequest
- *
- * @ORM\Table(name="user_request")
- * @ORM\Entity
  */
 class UserRequest
 {
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=300, nullable=false)
      */
     private $name;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="lastname", type="string", length=300, nullable=false)
      */
     private $lastname;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="company", type="string", length=300, nullable=true)
      */
     private $company;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="phone", type="string", length=20, nullable=false)
      */
     private $phone;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=200, nullable=false)
      */
     private $email;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="created", type="datetime", nullable=false)
      */
     private $created;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
     private $status;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="middlename", type="string", length=300, nullable=false)
      */
     private $middlename;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
-    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $userRequestProduct;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->status = 0;
+        $this->userRequestProduct = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -275,5 +259,38 @@ class UserRequest
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Add userRequestProduct
+     *
+     * @param \AppBundle\Entity\UserRequestProduct $userRequestProduct
+     * @return UserRequest
+     */
+    public function addUserRequestProduct(\AppBundle\Entity\UserRequestProduct $userRequestProduct)
+    {
+        $this->userRequestProduct[] = $userRequestProduct;
+
+        return $this;
+    }
+
+    /**
+     * Remove userRequestProduct
+     *
+     * @param \AppBundle\Entity\UserRequestProduct $userRequestProduct
+     */
+    public function removeUserRequestProduct(\AppBundle\Entity\UserRequestProduct $userRequestProduct)
+    {
+        $this->userRequestProduct->removeElement($userRequestProduct);
+    }
+
+    /**
+     * Get userRequestProduct
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUserRequestProduct()
+    {
+        return $this->userRequestProduct;
     }
 }

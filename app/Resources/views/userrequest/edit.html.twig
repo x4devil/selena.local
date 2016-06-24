@@ -1,21 +1,110 @@
-{% extends 'base.html.twig' %}
+{% extends '::adminbase.html.twig' %}
 
-{% block body %}
-    <h1>UserRequest edit</h1>
+{% block title %}
+    Просмотр заявки
+{% endblock %}
+{% block body -%}
+    <div class="panel panel-default">
+        <div class="panel-heading panel-header">
+            <h3 class="panel-title">Просмотр заявки</h3>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <span class="input-group-addon">Номер заявки</span>
+                <input type="text" disabled value="{{userRequest.id}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Фамилия</span>
+                <input type="text" disabled value="{{userRequest.lastname}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Имя</span>
+                <input type="text" disabled value="{{userRequest.name}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Отчество</span>
+                <input type="text" disabled value="{{userRequest.middlename}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Компания</span>
+                <input type="text" disabled value="{{userRequest.company}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Телефон</span>
+                <input type="text" disabled value="{{userRequest.phone}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Создана</span>
+                <input type="text" disabled value="{{userRequest.created|date('Y-m-d H:i:s')}}" class="form-control" aria-describedby="input-group-addon"/>
+            </div>
+            <form action="{{ path('userrequest_edit', {'id': userRequest.id}) }}" method="POST">
+                <div class="input-group">
+                    <span class="input-group-addon">Статус</span>
+                    <select name="status" class="form-control" aria-describedby="input-group-addon">
+                        {% if userRequest.status == 0 %}
+                            <option value="0" selected>Новый</option>
+                        {% else %}
+                            <option value="0">Новый</option>
+                        {% endif %}
+                        {% if userRequest.status == 1 %}
+                            <option value="1" selected>В обработке</option>
+                        {% else %}
+                            <option value="1">В обработке</option>
+                        {% endif %}
+                        {% if userRequest.status == 2 %}
+                            <option value="2" selected>Выполнена</option>
+                        {% else %}
+                            <option value="2">Выполнена</option>
+                        {% endif %}
+                    </select>
+                </div>
+                <p>
+                <div class="panel panel-default">
+                    <div class="panel-heading panel-header">
+                        <h3 class="panel-title">Товары</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="th-index th-class">#</th>
+                                    <th class="th-class">Название</th>
+                                    <th class="th-class">Количество</th>
+                                    <th class="th-class">Стоимость</th>
+                                    <th class="th-class">Сумма</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in userRequest.userRequestProduct %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ product.product.name }} </td>
+                                        <td>{{ product.amount }}</td>
+                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.price * product.amount}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4"></td>
+                                    <td ><b>{{sum}}</b></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('userrequest_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                <div class="panel-actions">
+                    <input class="btn btn-default" type="submit" value="Сохранить" />
+                    <a class="btn btn-default" href="{{ path('userrequest_excel', {'id' : userRequest.id}) }}">Выгрузить в Excel</a>
+                    <a class="btn btn-default" href="{{ path('userrequest_index')}}">Назад</a>
+                </div>
+            </form>
+            {{ form_start(delete_form)}}
+            <input class="btn btn-danger" type="submit" value="Удалить" onclick="return confirm('Вы уверены?')">
+            {{ form_end(delete_form)}}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -6,60 +6,40 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Product
- *
- * @ORM\Table(name="product", indexes={@ORM\Index(name="id_category", columns={"id_category"})})
- * @ORM\Entity
  */
-class Product
-{
+class Product {
+
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=500, nullable=false)
      */
     private $name;
 
     /**
      * @var float
-     *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=false)
      */
     private $price;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Images", mappedBy="product")
      */
     private $images;
 
     /**
      * @var \AppBundle\Entity\Category
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id")
-     * })
      */
     private $category;
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
     /**
      * Set name
@@ -67,8 +47,7 @@ class Product
      * @param string $name
      * @return Product
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -79,8 +58,7 @@ class Product
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -90,8 +68,7 @@ class Product
      * @param float $price
      * @return Product
      */
-    public function setPrice($price)
-    {
+    public function setPrice($price) {
         $this->price = $price;
 
         return $this;
@@ -102,8 +79,7 @@ class Product
      *
      * @return float 
      */
-    public function getPrice()
-    {
+    public function getPrice() {
         return $this->price;
     }
 
@@ -112,8 +88,7 @@ class Product
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -123,8 +98,7 @@ class Product
      * @param \AppBundle\Entity\Images $images
      * @return Product
      */
-    public function addImage(\AppBundle\Entity\Images $images)
-    {
+    public function addImage(\AppBundle\Entity\Images $images) {
         $this->images[] = $images;
 
         return $this;
@@ -135,8 +109,7 @@ class Product
      *
      * @param \AppBundle\Entity\Images $images
      */
-    public function removeImage(\AppBundle\Entity\Images $images)
-    {
+    public function removeImage(\AppBundle\Entity\Images $images) {
         $this->images->removeElement($images);
     }
 
@@ -145,8 +118,7 @@ class Product
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getImages()
-    {
+    public function getImages() {
         return $this->images;
     }
 
@@ -156,8 +128,7 @@ class Product
      * @param \AppBundle\Entity\Category $category
      * @return Product
      */
-    public function setCategory(\AppBundle\Entity\Category $category = null)
-    {
+    public function setCategory(\AppBundle\Entity\Category $category = null) {
         $this->category = $category;
 
         return $this;
@@ -168,12 +139,12 @@ class Product
      *
      * @return \AppBundle\Entity\Category 
      */
-    public function getCategory()
-    {
+    public function getCategory() {
         return $this->category;
     }
-    
+
     function __toString() {
         return $this->getName();
     }
+
 }

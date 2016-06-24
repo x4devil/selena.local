@@ -6,29 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category
- *
- * @ORM\Table(name="category")
- * @ORM\Entity
  */
-class Category
-{
+class Category {
+
     /**
      * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=250, nullable=false)
      */
     private $name;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
-
-
 
     /**
      * Set name
@@ -36,8 +25,7 @@ class Category
      * @param string $name
      * @return Category
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -48,8 +36,7 @@ class Category
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -58,12 +45,12 @@ class Category
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
-    
+
     function __toString() {
         return $this->getName();
     }
+
 }

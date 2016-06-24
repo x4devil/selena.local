@@ -10,14 +10,14 @@
     </id>
     <field name="price" type="float" column="price" precision="10" scale="0" nullable="false"/>
     <field name="amount" type="smallint" column="amount" nullable="false"/>
+    <many-to-one field="userRequest" target-entity="UserRequest" inversedBy="userRequestProduct">
+      <join-columns>
+        <join-column name="id_user_request" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
     <many-to-one field="product" target-entity="Product">
       <join-columns>
         <join-column name="id_product" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
-    <many-to-one field="userRequest" target-entity="UserRequest">
-      <join-columns>
-        <join-column name="id_user_request" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

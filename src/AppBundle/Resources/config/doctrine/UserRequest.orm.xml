@@ -12,5 +12,6 @@
     <field name="created" type="datetime" column="created" nullable="false"/>
     <field name="status" type="smallint" column="status" nullable="false"/>
     <field name="middlename" type="string" column="middlename" length="300" nullable="false"/>
+    <one-to-many target-entity="UserRequestProduct" mapped-by="userRequest" field="userRequestProduct"/>
   </entity>
 </doctrine-mapping>
