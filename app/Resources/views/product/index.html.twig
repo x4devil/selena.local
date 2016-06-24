@@ -62,7 +62,11 @@
                     {% for entity in products %}
                         <tr>
                             <td class="th-index">{{ loop.index }}</td>
-                            <td>{{ entity.id }}</td>
+                            <td>
+                                {% if entity.images.get(0) is not empty %}
+                                    <img src="/web/img/products/{{ entity.images.get(0).id }}{{ entity.images.get(0).extend }}" style="height:100px; width:100px;"/>
+                                {% endif %}
+                            </td>
                             <td>{{ entity.name }}</td>
                             <td>{{ entity.price }}</td>
                             <td class="th-action">

@@ -57,11 +57,11 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                {% for picture in product.images %}
+                {% for image in product.images %}
                     <div class="col-sm-6 col-md-4">
-                        <form class="thumbnail" action="{{path('image_unload', { 'id': picture.id })}}" method="post">
+                        <form class="thumbnail" action="{{path('image_unload', { 'id': image.id })}}" method="post">
                             <input name="_method" value="DELETE" type="hidden"/>
-                            <img src="/web/img/products/{{ picture.id }}{{ picture.extend() }}" width="100%" style="height:250px"/>
+                            <img src="/web/img/products/{{ image.id }}{{ image.extend }}" width="100%" style="height:250px"/>
                             <div class="caption" style="text-align: center;">
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Вы уверены?');">Удалить</button>
                             </div>

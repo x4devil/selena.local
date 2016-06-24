@@ -39,6 +39,7 @@ class Product {
      */
     public function __construct() {
         $this->images = new \Doctrine\Common\Collections\ArrayCollection();
+//        $this->images->get
     }
 
     /**
