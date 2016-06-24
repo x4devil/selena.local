@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Images;
 use AppBundle\Form\ProductType;
 
 /**
@@ -126,6 +127,7 @@ class ProductController extends Controller {
     public function editAction(Request $request, Product $product) {
         $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('AppBundle\Form\ProductType', $product);
+        $uploadForm = $this->createUploadForm($product->getId());
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -140,6 +142,7 @@ class ProductController extends Controller {
                     'product' => $product,
                     'edit_form' => $editForm->createView(),
                     'delete_form' => $deleteForm->createView(),
+                    'upload_form' => $uploadForm->createView(),
                     'activePage' => $this->activePage,
         ));
     }
@@ -164,6 +167,47 @@ class ProductController extends Controller {
     }
 
     /**
+     *
+     * @Route("/{id}/upload", name="image_upload")
+     * @Method("PUT")
+     */
+    public function uploadAction(Request $request, Product $product) {
+        $files = $request->files;
+        if ($files != NULL) {
+            $em = $this->getDoctrine()->getManager();
+
+            $path = __DIR__ . '../../../../web/img/products/';
+
+            foreach ($files as $file => $val) {
+                foreach ($val as $v) {
+                    $image = new Images();
+                    $image->setExtend('.jpg');
+                    $image->setProduct($product);
+                    $em->persist($image);
+                    $em->flush();
+
+                    $v->move($path, $image->getId() . $image->getExtend());
+                }
+            }
+        }
+        return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
+    }
+
+    /**
+     *
+     * @Route("/{id}/upload", name="image_unload")
+     * @Method("DELETE")
+     */
+    public function unloadAction(Images $image) {
+        $productId = $image->getProduct()->getId();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($image);
+        $em->flush();
+
+        return $this->redirectToRoute('product_edit', array('id' => $productId));
+    }
+
+    /**
      * Creates a form to delete a Product entity.
      *
      * @param Product $product The Product entity
@@ -174,6 +218,25 @@ class ProductController extends Controller {
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('product_delete', array('id' => $product->getId())))
                         ->setMethod('DELETE')
+                        ->getForm()
+        ;
+    }
+
+    /**
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createUploadForm($id) {
+        return $this->createFormBuilder()
+                        ->setAction($this->generateUrl('image_upload', array('id' => $id)))
+                        ->setMethod('PUT')
+                        ->add('files', 'file', array(
+                            'label' => 'Файлы',
+                            'attr' => array(
+                                'required' => 'true',
+                                'multiple' => 'multiple',
+                                'name' => 'images[]',)))
+                        ->add('submit', 'submit', array('label' => 'Загрузить', 'attr' => array('class' => 'btn')))
                         ->getForm()
         ;
     }
