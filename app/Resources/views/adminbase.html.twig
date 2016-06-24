@@ -41,11 +41,11 @@
                         {% else %}
                             <li><a href="{{ path('userrequest_index', {'page':'1'}) }}">Заявки</a></li>
                         {% endif %}
-                        {#{% if activePage == 'settings' %}
-                            <li class="active"><a href="{{ path('settings') }}">Настройки</a></li>
+                        {% if activePage == 'user' %}
+                            <li class="active"><a href="{{ path('user_edit') }}">Пользователь</a></li>
                         {% else %}
-                            <li><a href="{{ path('settings') }}">Настройки</a></li>
-                        {% endif %}#}
+                            <li><a href="{{ path('user_edit') }}">Пользователь</a></li>
+                        {% endif %}
                         </ul>
                     </div>
                 </div>

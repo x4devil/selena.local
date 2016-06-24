@@ -1,0 +1,46 @@
+{% extends '::adminbase.html.twig' %}
+
+{% block title %}
+    Редактирование пользователя
+{% endblock %}
+{% block body -%}
+    <div class="panel panel-default">
+        <div class="panel-heading panel-header">
+            <h3 class="panel-title">Редактирование пользователя</h3>
+        </div>
+        <div class="panel-body">
+            <div style="text-align: center; margin-bottom: 10px; font-size: 18px;">
+                {% if errors is defined and errors is not empty  %}
+                <span class="label label-warning">{{ errors }}</span>
+                {% endif %}
+            </div>
+            <div style="text-align: center; margin-bottom: 10px; font-size: 18px;">
+                {% if success is defined and success is not empty  %}
+                <span class="label label-success">{{ success }}</span>
+                {% endif %}
+            </div>
+            {{ form_start(edit_form)}}
+            <div class="input-group">
+                <span class="input-group-addon" id="name-group">Название</span>
+                {{ form_widget(edit_form.username, { 'attr': {'class': 'form-control', 'aria-describedby' : 'input-group-addon', 'placeholder': 'Логин', 'required' : 'true'} }) }}
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon" id="email-group">Электронный адрес</span>
+                {{ form_widget(edit_form.email, { 'attr': {'class': 'form-control', 'aria-describedby' : 'input-group-addon', 'placeholder': 'Электронный адрес', 'required' : 'true'} }) }}
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Старый пароль</span>
+                <input type="password" name="old-password" class="form-control" aria-describedby="input-group-addon" placeholder="Старый пароль"/>
+            </div>
+            <div class="input-group">
+                <span class="input-group-addon">Новый пароль</span>
+                <input type="password" name="new-password" class="form-control" aria-describedby="input-group-addon" placeholder="Новый пароль"/>
+            </div>
+            <div class="panel-actions">
+                <input class="btn btn-default" type="submit" value="Сохранить" />
+                <a class="btn btn-default" href="{{ path('product_index') }}">Назад</a>
+            </div>
+            {{ form_end(edit_form)}}
+        </div>
+    </div>
+{% endblock %}
