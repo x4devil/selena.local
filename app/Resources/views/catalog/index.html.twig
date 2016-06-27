@@ -1,0 +1,183 @@
+{% extends '::base.html.twig' %}
+{% block title %}
+    Селена|Каталог
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="/web/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/web/css/catalog.css" rel="stylesheet">
+{% endblock%}
+
+{% block body -%}
+    <div class="divider"></div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            <div class="itm right">
+                <span>Товаров на странице 
+                    <select name="s" class="form-control custom1"
+                            onchange="window.location.href =                 {{ path('catalog_index')}} +'?p=1&c={{category}}&s=' + $(this).val() + '&o={{order}}&d={{direct}}'">
+                        {% if size == 10 %}
+                            <option selected value="10">10</option>
+                        {% else %}
+                            <option value="10">10</option>
+                        {% endif %}
+                        {% if size == 20 %}
+                            <option selected value="20">20</option>
+                        {% else %}
+                            <option value="20">20</option>
+                        {% endif %}
+                        {% if size == 50 %}
+                            <option selected value="50">50</option>
+                        {% else %}
+                            <option value="50">50</option>
+                        {% endif %}
+                    </select> 
+                </span>
+            </div>
+
+            <div class="sort right">
+                <span>Сортировать по 
+                    <select name="s" class="form-control custom2" 
+                            onchange="window.location.href =           {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o=' + $(this).val() + '&d={{direct}}'">
+                        {% if order == 'p.price' %}
+                            <option selected value="p.price">цене</option>
+                        {% else %}
+                            <option value="p.price">цене</option>
+                        {% endif %}
+                        {% if order == 'p.name' %}
+                            <option selected value="p.name">названию</option>
+                        {% else %}
+                            <option value="p.name">названию</option>
+                        {% endif %}
+                    </select>
+                </span>
+            </div>
+
+            <div class="sort right">
+                <span>Порядок сортировки 
+                    <select name="d" class="form-control custom2" 
+                            onchange="window.location.href =           {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o={{order}}&d=' + $(this).val();">
+                        {% if direct == 'asc' %}
+                            <option selected value="asc">по возрастанию</option>
+                        {% else %}
+                            <option value="asc">по возрастанию</option>
+                        {% endif %}
+                        {% if direct == 'desc' %}
+                            <option selected value="desc">по убыванию</option>
+                        {% else %}
+                            <option value="desc">по убыванию</option>
+                        {% endif %}
+                    </select>
+                </span>
+            </div>
+
+            <div class="btn btn-default rem right" onclick="window.location.href
+                    ={{ path('catalog_index')}}">Очистить фильтры<span class="glyphicon glyphicon-remove"></span></div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-6 col-md-2">
+                <div class="name text-center">
+                    <h3>Каталог Товаров</h3>
+                    <ul class="list-group">
+                        {% for c in categories %}
+                            {% if c.id == category %}
+                                <li class="active list-group-item"><a href="{{ path('catalog_index', {'p': page, 'c' : c.id, 's' : size, 'o' : order, 'd' : direct}) }}">{{ c.name }}</a></li>
+                            {% else %}
+                                <li class="list-group-item"><a href="{{ path('catalog_index', {'p': page, 'c' : c.id, 's' : size, 'o' : order, 'd' : direct}) }}">{{ c.name }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4 col-md-10">
+                <hr>
+                <div class="row">
+                    {% if paginator.startPage != paginator.endPage %}
+                        <nav>
+                            <ul class="pagination top">
+                                {% if paginator.startPage == paginator.activePage %}
+                                    <li class="disabled">
+                                    {% else %}
+                                    <li>
+                                    {% endif %}
+                                    <a href="{{ path('catalog_index', {'p': paginator.prevPage, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                {% for page in paginator.startPage..paginator.endPage %}
+                                    {% if page == paginator.activePage %}
+                                        <li class="active"><a href="{{ path('catalog_index', {'p': page, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}">{{ page }}</a></li>
+                                        {% else %}
+                                        <li><a href="{{ path('catalog_index', {'p': page, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}">{{ page }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if paginator.endPage == paginator.activePage %}
+                                    <li class="disabled">
+                                    {% else %}
+                                    <li>
+                                    {% endif %}
+                                    <a href="{{ path('catalog_index', {'p': paginator.nextPage, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+                <div class="row line">
+                    {% for p in products %}
+                        <div class="thumbnail">
+                            {% if p.images is not empty %}
+                                <img src="/web/img/products/{{ p.images.get(0).id }}{{ p.images.get(0).extend }}" alt="...">
+                            {% endif %}
+                            <div class="caption">
+                                <h3>{{ p.name }}</h3>
+                                <p>Цена: {{ p.price }} руб.</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        {% if paginator.startPage != paginator.endPage %}
+            <nav>
+                <ul class="pagination top">
+                    {% if paginator.startPage == paginator.activePage %}
+                        <li class="disabled">
+                        {% else %}
+                        <li>
+                        {% endif %}
+                        <a href="{{ path('catalog_index', {'p': paginator.prevPage, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% for page in paginator.startPage..paginator.endPage %}
+                        {% if page == paginator.activePage %}
+                            <li class="active"><a href="{{ path('catalog_index', {'p': page, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}">{{ page }}</a></li>
+                            {% else %}
+                            <li><a href="{{ path('catalog_index', {'p': page, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}">{{ page }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if paginator.endPage == paginator.activePage %}
+                        <li class="disabled">
+                        {% else %}
+                        <li>
+                        {% endif %}
+                        <a href="{{ path('catalog_index', {'p': paginator.nextPage, 'c' : category, 's' : size, 'o' : order, 'd' : direct}) }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+    <br class="divider">
+{% endblock %}

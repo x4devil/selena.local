@@ -6,125 +6,125 @@ html {
 
 .navbar {
 
-  padding: 20px 0;
+    padding: 20px 0;
 }                        
 
 
-												/* common setting */
+/* common setting */
 
 section {
-  padding: 60px 0;
+    padding: 60px 0;
 }
 
 
 
 .clearfix {
 
-margin-bottom: 100px;
+    margin-bottom: 100px;
 
 }
 
 .divider {
 
-	margin: 80px 0;
+    margin: 80px 0;
 
 }
 
 hr {
 
-border: solid 1px #333;
-width: 975px;
-margin-right: 25px;
+    border: solid 1px #333;
+    width: 975px;
+    margin-right: 25px;
 
 }
 
 .col-sm-6, .col-md-6 {
 
-padding-left: 5px;
-padding-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 
 }
 
- .glyphicon-remove {
+.glyphicon-remove {
 
-padding-left: 5px;
+    padding-left: 5px;
 }
 
 .glyphicon {
 
-top:3px;
+    top:3px;
 
 }
-                    /* End common setting */
+/* End common setting */
 
-        /* фильтры */
+/* фильтры */
 
 
 .right {
 
-margin-top: 80px;
-float: right;
+    margin-top: 80px;
+    float: right;
 
 }
 
 .rem {
 
-margin-right: 47px;
-border: 0;
+    margin-right: 47px;
+    border: 0;
 
 }
 
 .itm {
 
 
-margin-right: 25px;
+    margin-right: 25px;
 
 }
 
 .sort {
 
-margin-right: 38px;
+    margin-right: 38px;
 
 }
 
 
 
- 
+
 .form-control {
 
-display: inline-block;
+    display: inline-block;
 
 
 }
 
 .form-control:focus {
 
-box-shadow: none;
+    box-shadow: none;
 
 }
 
 select.custom1 {
-  border: none;
-  background-image: url('../images/downn.png');
-  background-repeat: no-repeat;
-  background-position: right center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  padding: 0 0 0 5px;
-  width: 50px;
+    border: none;
+    background-image: url('../images/downn.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0 0 0 5px;
+    width: 50px;
 }
 
 select.custom2 {
-  border: none;
-  background-image: url('../images/downn.png');
-  background-repeat: no-repeat;
-  background-position: right center;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-padding: 0 0 0 7px;
-width:100px;
+    border: none;
+    background-image: url('../images/downn.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0 0 0 7px;
+    width:100px;
 }
 
 /* конец фильтров */
@@ -134,13 +134,13 @@ width:100px;
 
 .name {
 
-margin-left: 25px;
+    margin-left: 25px;
 
 }
 
 .list-group-item {
 
-border: 0;
+    border: 0;
 
 }
 
@@ -153,36 +153,28 @@ border: 0;
 
 .thumbnail img {
 
-  width: 210px;
+    width: 210px;
 
 } 
 
 .thumbnail {
 
 
-float: right;
-margin-right: 35px;
+    float: right;
+    margin-right: 35px;
 
 }
 
 .pagination {
 
-float:right;
-margin-right: 40px;
+    float:right;
+    margin-right: 40px;
 }
 
 
 /* конце блока товаров */
+.thumbnail img {
+    width: 210px;
+    height: 100px;
+}
 
-
-
-
-
-
-
- 
-
-
-
-
-												
