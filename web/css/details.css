@@ -1,0 +1,32 @@
+.thumbnail img {
+	width: 100%;
+}
+
+.navbar-nav, .navbar-brand {
+
+	float: none;
+	text-align: center;
+	}
+
+.navbar-nav li {
+
+	float: none;
+	display: inline-block;
+	}
+
+.glyphicon-chevron-down {
+
+margin-left: 3px;
+font-size: 10px;
+
+}
+
+.navbar-form {
+	text-align: center;
+		}
+
+.navbar-form .form-control {
+
+width: 355px;
+
+}

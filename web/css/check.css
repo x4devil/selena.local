@@ -1,0 +1,59 @@
+/* common settings */
+
+.navbar {
+
+  padding: 20px 0;
+}   
+
+.glyphicon-chevron-down {
+
+margin-left: 3px;
+font-size: 10px;
+
+}
+
+.divider {
+
+	margin: 120px 0;
+
+}
+
+
+/* end common settings */
+
+/* блок выбранных товаров */
+
+.product img {
+
+width: 100%;
+
+}
+
+.product {
+
+font-size: 16px;
+
+}
+
+.cost {
+
+font-size: 20px;
+font-weight: bold;
+
+}
+
+.total {
+
+font-size: 20px;
+font-weight: bold;
+
+}
+
+
+/* конец блока выбранных товаров */
+
+
+
+
+
+
