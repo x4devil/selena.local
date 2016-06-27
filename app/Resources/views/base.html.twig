@@ -24,21 +24,29 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav pull-right">
                         <li class="hidden">
-                            <a class="page-scroll" href="#page-top"></a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#page-top"></a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#about">О нас</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#about">О нас</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#contact">Контакты</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#contact">Контакты</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#contact">Как нас найти</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#contact">Как нас найти</a>
                         </li>
-                        <li>
+                        {% if activePage == 'catalog' %}
+                            <li class="active">
+                            {% else %}
+                            <li>
+                            {% endif %}
                             <a class="page-scroll" href="{{ path('catalog_index') }}">Каталог</a>
                         </li>
-                        <li>
+                        {% if activePage == 'cart' %}
+                            <li class="active">
+                            {% else %}
+                            <li>
+                            {% endif %}
                             <a class="page-scroll" href="{{ path('cart_index') }}">Корзина</a>
                         </li>
                     </ul>
