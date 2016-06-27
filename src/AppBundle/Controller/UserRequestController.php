@@ -155,6 +155,7 @@ class UserRequestController extends Controller {
 
         $this->cellFontStyle($phpExcelObject, 'A2:A3', true);
         $this->cellFontStyle($phpExcelObject, 'D2:D4', true);
+        $this->cellTextAlign($phpExcelObject, 'C1', 'center');
     }
 
     private function createSheetTable($phpExcelObject, $sheet, UserRequest $userRequest) {
@@ -208,7 +209,7 @@ class UserRequestController extends Controller {
     }
 
     private function cellTextAlign($phpExcelObject, $cells, $aligment) {
-        $phpExcelObject->getActiveSheet()->getStyle($cells)->getFill()->applyFromArray(array(
+        $phpExcelObject->getActiveSheet()->getStyle($cells)->applyFromArray(array(
             'alignment' => array(
                 'horizontal' => $aligment, //PHPExcel_Style_Alignment::HORIZONTAL_LEFT
             )
