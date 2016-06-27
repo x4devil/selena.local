@@ -17,7 +17,7 @@
             <div class="itm right">
                 <span>Товаров на странице 
                     <select name="s" class="form-control custom1"
-                            onchange="window.location.href =                 {{ path('catalog_index')}} +'?p=1&c={{category}}&s=' + $(this).val() + '&o={{order}}&d={{direct}}'">
+                            onchange="window.location.href =                     {{ path('catalog_index')}} +'?p=1&c={{category}}&s=' + $(this).val() + '&o={{order}}&d={{direct}}'">
                         {% if size == 10 %}
                             <option selected value="10">10</option>
                         {% else %}
@@ -40,7 +40,7 @@
             <div class="sort right">
                 <span>Сортировать по 
                     <select name="s" class="form-control custom2" 
-                            onchange="window.location.href =           {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o=' + $(this).val() + '&d={{direct}}'">
+                            onchange="window.location.href =               {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o=' + $(this).val() + '&d={{direct}}'">
                         {% if order == 'p.price' %}
                             <option selected value="p.price">цене</option>
                         {% else %}
@@ -58,7 +58,7 @@
             <div class="sort right">
                 <span>Порядок сортировки 
                     <select name="d" class="form-control custom2" 
-                            onchange="window.location.href =           {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o={{order}}&d=' + $(this).val();">
+                            onchange="window.location.href =               {{ path('catalog_index')}} +'?p=1&c={{category}}&s={{size}}&o={{order}}&d=' + $(this).val();">
                         {% if direct == 'asc' %}
                             <option selected value="asc">по возрастанию</option>
                         {% else %}
@@ -85,10 +85,10 @@
                         {% for c in categories %}
                             {% if c.id == category %}
                                 <li class="active list-group-item"><a href="{{ path('catalog_index', {'p': page, 'c' : c.id, 's' : size, 'o' : order, 'd' : direct}) }}">{{ c.name }}</a></li>
-                            {% else %}
+                                {% else %}
                                 <li class="list-group-item"><a href="{{ path('catalog_index', {'p': page, 'c' : c.id, 's' : size, 'o' : order, 'd' : direct}) }}">{{ c.name }}</a></li>
-                            {% endif %}
-                        {% endfor %}
+                                {% endif %}
+                            {% endfor %}
                     </ul>
                 </div>
 
@@ -138,6 +138,19 @@
                             <div class="caption">
                                 <h3>{{ p.name }}</h3>
                                 <p>Цена: {{ p.price }} руб.</p>
+                                <form class="addForm" action="{{ path('cart_add') }}" method="POST">
+                                    <input name="_method" type="hidden" value="PUT"/>
+
+                                    {#<input name="page" type="hidden" value="{{ page }}"/>
+                                    <input name="category" type="hidden" value="{{ category }}"/>
+                                    <input name="size" type="hidden" value="{{ size }}"/>
+                                    <input name="order" type="hidden" value="{{ order }}"/>
+                                    <input name="direct" type="hidden" value="{{ direct}}"/>#}
+
+                                    <input name="product" type="hidden" value="{{ p.id }}" required="true"/>
+                                    Количество:<input name="amount" type="text" pattern="\d+" value="1" required="true"/>
+                                    <button class="btn btn-default" type="submit">В корзину</button>
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
@@ -180,4 +193,25 @@
         {% endif %}
     </div>
     <br class="divider">
+
+    <div class="modal fade bs-example-modal-sm" id="modalAdd" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalLabel">Товар добавлен в корзину</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="responce" style="text-align: center;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src='/web/js/jquery.min.js'></script>
+    <script src="/web/js/bootstrap.min.js"></script>
+    <script src="/web/js/cart.js"></script>
 {% endblock %}
