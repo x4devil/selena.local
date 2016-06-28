@@ -4,7 +4,7 @@ $(document).ready(function () {
     });
 
     $('#modalInfo').on('hidden.bs.modal', function () {
-        $('#responce').html(
+        $('#responce-info').html(
                 'Пожалуйста подождите...'
                 );
     });
@@ -19,12 +19,12 @@ function info(event) {
         type: 'PUT',
         data: formData,
         success: function (data) {
-            $('#responce').html(
+            $('#responce-info').html(
                     '<span class="label label-' + data['responce']['code'] + '">' + data['responce']['message'] + '</span>'
                     );
         },
         error: function (data) {
-            $('#responce').html(
+            $('#responce-info').html(
                     '<span class="label label-danger">Произошла ошибка попробуйте позже</span>'
                     );
         }

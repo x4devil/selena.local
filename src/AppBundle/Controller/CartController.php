@@ -48,17 +48,29 @@ class CartController extends Controller {
      */
     public function addAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $product = $em->getRepository('AppBundle:Product')->findOneBy(array('id' => $request->get('product')));
+
+        $productRepo = $em->getRepository('AppBundle:Product');
+        $productQuery = $productRepo->createQueryBuilder('p');
+        $productQuery
+                ->leftJoin('p.images', 'i')
+                ->join('p.category', 'c')
+                ->distinct()
+                ->where('1=1')
+                ->andWhere($productQuery->expr()->eq('p.id', $request->get('product')));
+        $product = $productQuery->getQuery()->getResult();
+        
         $amount = $request->get('amount');
         if (!$amount || $amount <= 0) {
             $amount = 1;
         }
 
-        if (!$product) {
+        if (!$product || $product == null || $product[0] == null) {
             $responce['message'] = 'Упс:( Мы не смогли найти нужный товар';
             $responce['code'] = 'danger';
             return new JsonResponse(array('responce' => $responce));
         }
+        
+        $product = $product[0];
 
         $session = $this->getRequest()->getSession();
 
