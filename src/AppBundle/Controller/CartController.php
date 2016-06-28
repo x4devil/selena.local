@@ -211,11 +211,34 @@ class CartController extends Controller {
                 $em->flush();
             }
         }
-//        $this->getRequest()->getSession()->set('products', new \Doctrine\Common\Collections\ArrayCollection());
+        $this->getRequest()->getSession()->set('products', new \Doctrine\Common\Collections\ArrayCollection());
 
         $responce['message'] = 'Спасибо за заказ. Ваша заявка принята.<br> Номер вашей заявки: ' . $userRequest->getId();
         $responce['code'] = 'success';
+        $this->sendEmails($email, $phone, $name . ' ' . $middlename . ' ' . $lastname, $userRequest->getId());
+
         return new JsonResponse(array('responce' => $responce));
+    }
+
+    private function sendEmails($email, $phone, $name, $id) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => 1));
+        if ($user != null) {
+            //Письмо админу
+            $to = 'info@selena.ru';
+            $from = $user->getEmail();
+            $subject = 'Заявка на сайте www.selena.ru';
+            $email_content = "Пользователь: $name \r\nЭлектронная почта: $email \r\nНомер: $phone\r\n\Номер заявки: $id";
+            $headers = "From: $from\r\nReply-To: $from\r\nContent-type: text/plain; charset=utf-8\r\n";
+            mail($to, $subject, $email_content, $headers);
+        }
+        //Письмо клиенту
+        $to = $email;
+        $from = 'info@selena.ru';
+        $subject = 'Заявка на сайте www.selena.ru';
+        $email_content = 'Спасибо за заказ. Ваша заявка принята.<br> Номер вашей заявки: ' . $id;
+        $headers = "From: $from\r\nReply-To: $from\r\nContent-type: text/plain; charset=utf-8\r\n";
+        mail($to, $subject, $email_content, $headers);
     }
 
     private function getSessionProducts() {
