@@ -1,0 +1,125 @@
+{% extends '::base.html.twig' %}
+{% block title %}
+    Селена|Оформление заказа
+{% endblock %}
+{% block stylesheets %}
+    <link href="/web/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/web/css/check.css" rel="stylesheet">
+{% endblock%}
+{% block body -%}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-sm-7 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Shipping Address</div>
+                    <div class="panel-body">
+                        <form id="checkForm" action="{{ path('check_request') }}" method="POST">
+                            <input type="hidden" name="_method" value="PUT"/>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Имя</label>
+                                        <input name="name" required type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Отчество</label>
+                                        <input name="middlename" required type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Фамилия</label>
+                                        <input name="lastname" required type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Company name</label>
+                                        <input name="company" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Telephone</label>
+                                        <input name="phone" required type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Email address</label>
+                                        <input name="email" required type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- конец формы заказа -->
+
+
+            <!-- блок выбранного товара -->
+            <div class="col-md-5 col-sm-5 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="pull-right"><a href="#">Edit Chart</a></span>
+                        Review Order
+                    </div>
+                    {% for sproduct in sessionProducts %}
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-4 ii">
+                                    {% if sproduct.product.images is not empty %}
+                                        <img csrc="/web/img/products/{{ sproduct.product.images.get(0).id }}{{ sproduct.product.images.get(0).extend }}" alt="...">
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <span class="product">{{ sproduct.product.name }}</span><br>
+                                    <span>{{ sproduct.amount }}</span>
+                                </div>
+                                <div class="col-md-2 col-sm-2 cost">
+                                    <span class="pull-right">{{ sproduct.product.price * sproduct.amount }}</span>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6">
+                            <span class="total">Sub Total</span>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+                            <span class="pull-right total">{{ total }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-sm" id="modalCheck" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="modalLabel">Товар добавлен в корзину</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="responce" style="text-align: center;">
+                        Пожалуйста подождите...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Конец блока выбранного товара -->
+{% endblock %}
+{% block javascripts %}
+    <script src='/web/js/jquery.min.js'></script>
+    <script src="/web/js/bootstrap.min.js"></script>
+    <script src="/web/js/check.js"></script>
+{% endblock %}

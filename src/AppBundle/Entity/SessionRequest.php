@@ -3,6 +3,10 @@
 namespace AppBundle\Entity;
 
 class SessionRequest {
+    /**
+     *
+     * @var \AppBundle\Entity\Product 
+     */
     protected $product;
     protected $amount;
     
@@ -11,6 +15,10 @@ class SessionRequest {
         $this->amount = 1;
     }
     
+    /**
+     * 
+     * @return \AppBundle\Entity\Product 
+     */
     public function getProduct() {
         return $this->product;
     }

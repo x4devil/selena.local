@@ -65,6 +65,7 @@ class UserRequest
     public function __construct()
     {
         $this->userRequestProduct = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->status = 0;
     }
 
     /**

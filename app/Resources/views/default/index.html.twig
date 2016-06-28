@@ -32,16 +32,16 @@
                     <ul class="nav navbar-nav pull-right">
                         <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
                         <li class="hidden">
-                            <a class="page-scroll" href="#page-top"></a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#page-top"></a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#about">О нас</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#about">О нас</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#contact">Контакты</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#contact">Контакты</a>
                         </li>
                         <li>
-                            <a class="page-scroll" href="#contact">Как нас найти</a>
+                            <a class="page-scroll" href="{{ path('homepage') }}#contact">Как нас найти</a>
                         </li>
                         <li>
                             <a class="page-scroll" href="{{ path('catalog_index') }}">Каталог</a>
