@@ -139,6 +139,10 @@ class CatalogController extends Controller {
             if ($start <= 0) {
                 $start = 1;
             }
+            
+            if ($end <= 0) {
+                $end = 1;
+            }
 
             $paginator->setStartPage($start);
             $paginator->setEndPage($end);

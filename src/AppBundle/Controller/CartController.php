@@ -220,6 +220,46 @@ class CartController extends Controller {
         return new JsonResponse(array('responce' => $responce));
     }
 
+    /**
+     *
+     * @Route("/request_info", name="check_status_info")
+     * @Method("PUT")
+     */
+    public function checkStatusAction(Request $request) {
+        $id = $this->escape($request->get('request-id'));
+        if ($id == null) {
+            $responce['message'] = 'Заявка не найдена';
+            $responce['code'] = 'warning';
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $userRequest = $em->getRepository('AppBundle:UserRequest')->findOneBy(array('id' => $id));
+            if ($userRequest == null) {
+                $responce['message'] = 'Заявка не найдена';
+                $responce['code'] = 'warning';
+            } else {
+                $status = 'Новая';
+                if ($userRequest->getStatus() == 1) {
+                    $status = 'В обработке';
+                } else if ($userRequest->getStatus() == 2) {
+                    $status = 'Выполнена';
+                }
+                $responce['message'] = "Статус вашей заявки: '$status'";
+                $responce['code'] = 'success';
+            }
+        }
+        return new JsonResponse(array('responce' => $responce));
+    }
+
+    private function escape($val) {
+        if ($val == null) {
+            return null;
+        }
+        $result = strip_tags($val);
+        $result = htmlspecialchars($result);
+        $result = mysql_escape_string($result);
+        return $result;
+    }
+
     private function sendEmails($email, $phone, $name, $id) {
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository('AppBundle:User')->findOneBy(array('id' => 1));
